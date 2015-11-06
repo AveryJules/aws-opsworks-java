@@ -14,6 +14,10 @@ package "remove old JVM package #{old_jvm_pkg_to_remove}" do
   only_if { node['opsworks_java']['jvm_version'].to_i >= 7 }
 end
 
+include_recipe 'opsworks_java::java8_add_ppa' do
+  only_if { node['opsworks_java']['jvm_version'].to_i == 8 && node[:platform_family] == "debian"}
+end
+
 # install OpenJDK in either case to satisfy package dependencies
 package node['opsworks_java']['jvm_pkg']['name'] do
   action :install

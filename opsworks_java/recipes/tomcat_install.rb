@@ -8,6 +8,13 @@ tomcat_pkgs = case node["platform_family"]
                 end
               end
 
+case node["platform_family"]
+when "debian" then
+  if node["opsworks_java"]["tomcat"]["base_version"].to_i == 8
+    include_recipe 'opsworks_java::tomcat8_add_ppa'
+  end
+end
+
 tomcat_pkgs.each do |pkg|
   package pkg do
     action :install
